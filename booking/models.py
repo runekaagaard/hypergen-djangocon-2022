@@ -13,6 +13,6 @@ class Timeslot(models.Model):
     def __repr__(self):
         d1 = date_format(self.start, format='SHORT_DATETIME_FORMAT', use_l10n=True)
         d2 = date_format(self.end, format='SHORT_DATETIME_FORMAT', use_l10n=True)
-        booked_to = f' booked_to="{full_name(self.booked_to)}"' if self.booked_to else ""
+        booked_to = f' booked_to="{full_name(self.booked_to)}"' if self.booked_to else " booked_to=None"
 
         return f'<Timeslot id={self.pk} start="{d1}" end="{d2}" doctor="{full_name(self.doctor)}"{booked_to}>'

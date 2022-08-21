@@ -48,7 +48,7 @@ def my_bookings(request):
 @liveview(perm="booking.create_booking")
 def book_timeslot(request):
     menu()
-    timeslots = Timeslot.objects.filter().order_by("start")
+    timeslots = Timeslot.objects.filter(booked_to=None).order_by("start")
     timeslots_grouped = groupby(timeslots, key=lambda x: x.start.date())
     hprint(timeslots, {"ok": 42}, im_doing_it=True, so_true="Go giants!", group=timeslots_grouped,
            first=next(timeslots_grouped))
