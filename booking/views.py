@@ -10,7 +10,10 @@ def hprint(*args, **kwargs):
     #           - Queryset
     #           - values and values_list
     #           - query (sql)
+<<<<<<< HEAD
     #           - grouper
+=======
+>>>>>>> 2d1ef198794dae6f5c4bcb611403294962d2c533
     from pprint import pformat
     d = dict
 
@@ -48,11 +51,17 @@ def my_bookings(request):
 def book_timeslot(request):
     menu()
     timeslots = Timeslot.objects.filter(booked_to=None).order_by("start")
+<<<<<<< HEAD
     timeslots_grouped = groupby(timeslots, key=lambda x: x.start.date())
     hprint(timeslots, {"ok": 42}, im_doing_it=True, so_true="Go giants!", group=timeslots_grouped,
            first=next(timeslots_grouped))
 
     for date, group in timeslots_grouped:
+=======
+    hprint(timeslots, {"ok": 42}, im_doing_it=True, so_true="Go giants!")
+
+    for date, group in groupby(timeslots, key=lambda x: x.start.date()):
+>>>>>>> 2d1ef198794dae6f5c4bcb611403294962d2c533
         h2(date)
         for timeslot in group:
             li(timeslot.start, timeslot.end, timeslot.doctor, sep=" | ")
