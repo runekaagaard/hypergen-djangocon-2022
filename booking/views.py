@@ -14,19 +14,20 @@ def hprint(*args, **kwargs):
     from pprint import pformat
     d = dict
 
-    def fmt(x):
-        dd(pformat(x, indent=4, width=120),
-           span(" (", x.__class__.__module__, ".",
-                type(x).__name__, ")", style=d(color="darkgrey")))
+    def fmt(x, tag=dd):
+        tag(pformat(x, indent=4, width=120),
+            span(" (", x.__class__.__module__, ".",
+                 type(x).__name__, ")", style=d(color="darkgrey")))
 
-    with div(style=d(padding="8px", margin="0", background="#ffc", color="black", font_family="sans-serif")):
-        if len(args) > 0 or kwargs:
+    with div(style=d(padding="8px", margin="4px 0 0 0", background="#ffc", color="black",
+                     font_family="sans-serif")):
+        if len(args) == 1 and not kwargs:
+            fmt(args[0], span)
+        else:
             for i, arg in enumerate(args, 1):
                 with dl(style=d(margin=0)):
                     dt("arg", i, style=d(font_weight="bold"), sep=" ")
                     fmt(arg)
-        else:
-            div(code(pformat(args[0], indent=4, width=120)))
 
         for k, v in kwargs.items():
             with dl(style=d(margin=0)):
@@ -51,6 +52,7 @@ def book_timeslot(request):
     timeslots_grouped = groupby(timeslots, key=lambda x: x.start.date())
     hprint(timeslots, {"ok": 42}, im_doing_it=True, so_true="Go giants!", group=timeslots_grouped,
            first=next(timeslots_grouped))
+    hprint("OK")
 
     for date, group in timeslots_grouped:
         h2(date)
