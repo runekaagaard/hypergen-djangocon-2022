@@ -17,9 +17,9 @@ def hprint(*args, **kwargs):
     def fmt(x):
         dd(pformat(x, indent=4, width=120),
            span(" (", x.__class__.__module__, ".",
-                type(x).__name__, ")", style=d(color="green")))
+                type(x).__name__, ")", style=d(color="darkgrey")))
 
-    with div(style=d(border="1px solid grey", padding="0 4px", background_color="#eee")):
+    with div(style=d(padding="8px", margin="0", background="#ffc", color="black", font_family="sans-serif")):
         if len(args) > 0 or kwargs:
             for i, arg in enumerate(args, 1):
                 with dl(style=d(margin=0)):
@@ -41,13 +41,13 @@ def menu():
 @liveview(perm="booking.view_booking")
 def my_bookings(request):
     menu()
-    for timeslot in Timeslot.objects.filter(booked_to=request.user):
+    for timeslot in Timeslot.objects.filter(booked_to=request.user).order_by("start"):
         li(timeslot.start, timeslot.end, timeslot.doctor, sep=" | ")
 
 @liveview(perm="booking.create_booking")
 def book_timeslot(request):
     menu()
-    timeslots = Timeslot.objects.filter(booked_to=None).order_by("start")
+    timeslots = Timeslot.objects.filter().order_by("start")
     timeslots_grouped = groupby(timeslots, key=lambda x: x.start.date())
     hprint(timeslots, {"ok": 42}, im_doing_it=True, so_true="Go giants!", group=timeslots_grouped,
            first=next(timeslots_grouped))
