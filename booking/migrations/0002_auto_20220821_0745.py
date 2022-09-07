@@ -17,6 +17,7 @@ PEOPLE = [
 
 def forward(apps, schema_editor):
     User = apps.get_model('auth', 'User')
+    Doctor = apps.get_model('booking', 'Doctor')
     Timeslot = apps.get_model('booking', 'Timeslot')
 
     user = User.objects.create_user('admin', 'admin@example.com', '1234')
@@ -26,26 +27,25 @@ def forward(apps, schema_editor):
     user.is_staff = True
     user.save()
 
-    users = []
+    doctors = []
     for person in PEOPLE:
-        first_name, last_name = person.split(" ")
-        username = person.lower().replace(" ", "")
-        user = User(first_name=first_name, last_name=last_name, email=f"{username}@example.com", username=username,
-                    is_staff=True)
-        user.save()
-        users.append(user)
+        doctor = Doctor(name=person)
+        doctor.save()
+        doctors.append(doctor)
 
     for _ in range(100):
         hour = random.randint(8, 15)
         start = datetime.datetime(2022, 10, random.randint(1, 14), hour, tzinfo=timezone.utc)
         end = start + datetime.timedelta(hours=1)
-        Timeslot(start=start, end=end, doctor=random.choice(users),
+        Timeslot(start=start, end=end, doctor=random.choice(doctors),
                  booked_to_id=1 if random.random() > 0.9 else None).save()
 
 def backward(apps, schema_editor):
     User = apps.get_model('auth', 'User')
+    Doctor = apps.get_model('booking', 'Doctor')
     Timeslot = apps.get_model('booking', 'Timeslot')
     User.objects.all().delete()
+    Doctor.objects.all().delete()
     Timeslot.objects.all().delete()
 
 class Migration(migrations.Migration):
