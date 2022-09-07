@@ -4,15 +4,35 @@ from django.db import migrations
 from django.utils import timezone
 
 PEOPLE = [
-    "Trevor Sutherland", "Boris Paige", "Maria Black", "Diana Dowd", "Julian Buckland", "Victor White",
-    "Leah Cornish", "Joshua Reid", "William Campbell", "Angela North", "Joan Glover", "Nicola Paterson",
-    "Tracey Greene", "Julia Mackay", "Blake Coleman", "Colin Chapman", "William Gill", "Gordon North",
-    "Jake Gibson", "Evan Hudson", "Stewart Hunter", "Charles Avery", "Amanda Bower", "Jake Stewart",
-    "Brian Hunter", "Elizabeth Ince", "Molly Carr", "Nicholas Thomson", "Donna Greene", "Gordon Graham",
-    "Chloe Slater", "Pippa Edmunds", "Isaac Oliver", "Joshua Mackay", "Lauren Watson", "Paul Butler",
-    "Andrew Slater", "Isaac Newman", "Elizabeth Arnold", "Neil May", "William Slater", "Leonard Welch",
-    "Alexandra Ellison", "Zoe Payne", "John Butler", "Emily McLean", "Hannah Kelly", "Connor Parr", "Stephen Ross",
-    "Evan Paige"
+    "Trevor Sutherland",
+    "Boris Paige",
+    "Maria Black",
+    "Diana Dowd",
+    "Julian Buckland",
+    "Victor White",
+    "Leah Cornish",
+    "Joshua Reid",
+    "William Campbell",
+    "Angela North",
+    "Joan Glover",
+    "Nicola Paterson",
+    "Tracey Greene",
+    "Julia Mackay",
+    "Blake Coleman",
+    "Colin Chapman",
+    "William Gill",
+    "Gordon North",
+    "Jake Gibson",
+    "Evan Hudson",
+    "Stewart Hunter",
+    "Charles Avery",
+    "Amanda Bower",
+    "Jake Stewart",
+    # "Brian Hunter", "Elizabeth Ince", "Molly Carr", "Nicholas Thomson", "Donna Greene", "Gordon Graham",
+    # "Chloe Slater", "Pippa Edmunds", "Isaac Oliver", "Joshua Mackay", "Lauren Watson", "Paul Butler",
+    # "Andrew Slater", "Isaac Newman", "Elizabeth Arnold", "Neil May", "William Slater", "Leonard Welch",
+    # "Alexandra Ellison", "Zoe Payne", "John Butler", "Emily McLean", "Hannah Kelly", "Connor Parr", "Stephen Ross",
+    # "Evan Paige"
 ]
 
 def forward(apps, schema_editor):
@@ -33,7 +53,7 @@ def forward(apps, schema_editor):
         doctor.save()
         doctors.append(doctor)
 
-    for _ in range(100):
+    for _ in range(20):
         hour = random.randint(8, 15)
         start = datetime.datetime(2022, 10, random.randint(1, 14), hour, tzinfo=timezone.utc)
         end = start + datetime.timedelta(hours=1)
