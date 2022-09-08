@@ -77,12 +77,12 @@ def my_bookings(request):
 
 ### Actions ###
 
-@action(perm="booking.create_booking", target_id="target")
+@action(perm="booking.create_booking", **liveview_settings)
 def filter_timeslots(request, query):
     timeslots_by_date = Timeslot.available_by_date(query)
     timeslot_template(timeslots_by_date)
 
-@action(perm="booking.create_booking", target_id="target")
+@action(perm="booking.create_booking", **liveview_settings)
 def book_timeslot2(request, query, timeslot_id):
     messages.add_message(request, messages.SUCCESS, "You booked a new time. Good stuff <3")
     messages.add_message(request, messages.INFO, "See your booked timeslots on this page!")
@@ -92,9 +92,10 @@ def book_timeslot2(request, query, timeslot_id):
     timeslot_template(timeslots_by_date)
 
     # return HttpResponseRedirect(my_bookings.reverse())
-    command("hypergen.redirect", my_bookings.reverse())
+    # command("hypergen.redirect", my_bookings.reverse())
 
-@action(perm="booking.create_booking", target_id="target", base_view=my_bookings)
+@action(perm="booking.create_booking", base_view=my_bookings, **liveview_settings)
 def cancel_timeslot(request, timeslot_id):
+    print("ADD MESSAGE")
     messages.add_message(request, messages.WARNING, "The timeslot is GONE!")
     Timeslot.objects.filter(pk=timeslot_id).update(booked_to=None)
