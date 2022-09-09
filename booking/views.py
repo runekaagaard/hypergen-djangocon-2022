@@ -1,8 +1,7 @@
 from contextlib import contextmanager
-from itertools import groupby
 
 from hypergen.imports import *
-from hypergen.plugins.alertify import AlertifyPlugin, alertify_messages
+from hypergen.plugins.alertify import AlertifyPlugin
 
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -48,7 +47,7 @@ def timeslot_template(timeslots_by_date, query=""):
                         td(timeslot.doctor)
                         td(
                             button("Book", class_="button primary", id=("book-timeslot", timeslot.pk),
-                                   onclick=callback(book_timeslot2, query, timeslot.pk)))
+                                   onclick=callback(book, query, timeslot.pk)))
 
 @contextmanager
 def card(title, description):
@@ -57,6 +56,16 @@ def card(title, description):
         p(description)
         with footer(class_="is-right"):
             yield
+
+@contextmanager
+def row():
+    with div(class_="row"):
+        yield
+
+@contextmanager
+def col(n):
+    with div(class_=f"col-{n}"):
+        yield
 
 ### Liveviews ###
 
@@ -69,9 +78,9 @@ def book_timeslot(request):
 
 @liveview(perm="booking.view_booking", **liveview_settings)
 def my_bookings(request):
-    with div(class_="row"):
+    with row():
         for timeslot in Timeslot.objects.filter(booked_to=request.user).order_by("start"):
-            with div(class_="col-4"), card(timeslot.fmt_datetime, timeslot.doctor):
+            with col(4), card(timeslot.fmt_datetime, timeslot.doctor):
                 a("Cancel", class_="button error", id=("timeslot", timeslot.pk),
                   onclick=callback(cancel_timeslot, timeslot.pk, confirm="Are you sure?"))
 
@@ -83,19 +92,17 @@ def filter_timeslots(request, query):
     timeslot_template(timeslots_by_date)
 
 @action(perm="booking.create_booking", **liveview_settings)
-def book_timeslot2(request, query, timeslot_id):
+def book(request, query, timeslot_id):
     messages.add_message(request, messages.SUCCESS, "You booked a new time. Good stuff <3")
-    messages.add_message(request, messages.INFO, "See your booked timeslots on this page!")
     Timeslot.objects.filter(pk=timeslot_id).update(booked_to=request.user)
 
     timeslots_by_date = Timeslot.available_by_date(query)
     timeslot_template(timeslots_by_date)
 
-    # return HttpResponseRedirect(my_bookings.reverse())
-    # command("hypergen.redirect", my_bookings.reverse())
+    return HttpResponseRedirect(my_bookings.reverse())
 
 @action(perm="booking.create_booking", base_view=my_bookings, **liveview_settings)
 def cancel_timeslot(request, timeslot_id):
     print("ADD MESSAGE")
-    messages.add_message(request, messages.WARNING, "The timeslot is GONE!")
     Timeslot.objects.filter(pk=timeslot_id).update(booked_to=None)
+    messages.add_message(request, messages.WARNING, "The timeslot is GONE!")
