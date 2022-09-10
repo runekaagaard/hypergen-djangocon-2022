@@ -5,6 +5,7 @@ from hypergen.plugins.alertify import AlertifyPlugin
 
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.templatetags.static import static
 
 from booking.models import Timeslot
 
@@ -15,23 +16,22 @@ def menu():
         a("Book timeslot", href=book_timeslot.reverse(), class_active="active")
         a("My bookings", href=my_bookings.reverse(), class_active="active")
 
-    p(" ")
-
 @contextmanager
 def base_template():
     doctype()
     with html():
         with head():
-            link(href="https://unpkg.com/chota")
-        with body(style=dict(margin="20px auto")), div(class_="container"):
-            menu()
+            link(href=static("chota.css"))
+        with body(), div(class_="container"):
+            h1("Doctor booking")
             with div(id="target"):
                 yield
 
 base_template.target_id = "target"
 
 def timeslot_template(timeslots_by_date, query=""):
-    with p(style=dict(margin_top="20px")):
+    menu()
+    with p():
         input_(placeholder="Search for your doctors name", oninput=callback(filter_timeslots, THIS, debounce=50),
                id="filter-timeslots", autofocus=True)
 
@@ -78,6 +78,7 @@ def book_timeslot(request):
 
 @liveview(perm="booking.view_booking", **liveview_settings)
 def my_bookings(request):
+    menu()
     with row():
         for timeslot in Timeslot.objects.filter(booked_to=request.user).order_by("start"):
             with col(4), card(timeslot.fmt_datetime, timeslot.doctor):
@@ -103,6 +104,5 @@ def book(request, query, timeslot_id):
 
 @action(perm="booking.create_booking", base_view=my_bookings, **liveview_settings)
 def cancel_timeslot(request, timeslot_id):
-    print("ADD MESSAGE")
     Timeslot.objects.filter(pk=timeslot_id).update(booked_to=None)
     messages.add_message(request, messages.WARNING, "The timeslot is GONE!")

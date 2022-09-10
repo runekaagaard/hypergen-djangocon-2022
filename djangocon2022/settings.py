@@ -121,3 +121,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SHORT_DATETIME_FORMAT = 'Y-m-d G:i'
 USE_L10N = False
+LOGIN_URL = "/"
