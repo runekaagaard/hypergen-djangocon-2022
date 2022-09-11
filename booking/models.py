@@ -20,6 +20,16 @@ class Timeslot(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name="+")
     booked_to = models.ForeignKey("auth.User", on_delete=models.CASCADE, default=None, null=True, related_name="+")
 
+    def __str__(self):
+        return self.fmt_datetime
+
+    def __repr__(self):
+        d1 = str(self.start)[:16]
+        d2 = str(self.end)[:16]
+        booked_to = f' booked_to="{full_name(self.booked_to)}"' if self.booked_to else " booked_to=None"
+
+        return f'<Timeslot id={self.pk} start="{d1}" end="{d2}" doctor="{self.doctor.name}"{booked_to}>'
+
     @property
     def fmt_datetime(self):
         return date_format(self.start, format='Y-m-d H:i') + " – " + date_format(self.end, "H:i")
@@ -35,16 +45,6 @@ class Timeslot(models.Model):
             timeslots = timeslots.filter(doctor__name__icontains=query)
 
         return [[k, list(v)] for k, v in groupby(timeslots, key=lambda x: x.start.date())]
-
-    def __str__(self):
-        return self.fmt_datetime
-
-    def __repr__(self):
-        d1 = str(self.start)[:16]
-        d2 = str(self.end)[:16]
-        booked_to = f' booked_to="{full_name(self.booked_to)}"' if self.booked_to else " booked_to=None"
-
-        return f'<Timeslot id={self.pk} start="{d1}" end="{d2}" doctor="{self.doctor.name}"{booked_to}>'
 
     @staticmethod
     def book(request, timeslot_id):
