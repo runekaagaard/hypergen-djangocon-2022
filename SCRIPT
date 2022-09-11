@@ -1,10 +1,12 @@
 Project. Model. Urls. Views.
 
-Hypergen. Hello world. Children. Attrs. Iterables. Id. Class. Style.
+Hypergen. Hello world. Children. Attrs. _. Iterables. Id. Class. Style.
 
 Liveview. Perm. Path. Autopath.
 
 Free Liveview. Thead. Iterable. Available_timeslots. Hprint. Loop. Template function.
+
+Base template.
 
 Filter Callback. Action. Target_id. Debounce. Commands.
 
@@ -20,3 +22,13 @@ free
 booked
 book
 cancel
+
+fmt_datetime
+fmt_time
+free_by_date
+
+def menu():
+    with nav(class_="tabs nav-center"):
+        a("Book timeslot", href=free.reverse(), class_active="active")
+        a("My bookings", href=booked.reverse(), class_active="active")
+

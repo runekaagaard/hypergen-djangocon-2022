@@ -29,7 +29,7 @@ class Timeslot(models.Model):
         return date_format(self.start, format='H:i') + " – " + date_format(self.end, "H:i")
 
     @staticmethod
-    def available_by_date(query=None):
+    def free_by_date(query=None):
         timeslots = Timeslot.objects.filter(booked_to=None).order_by("start")
         if query:
             timeslots = timeslots.filter(doctor__name__icontains=query)
@@ -45,3 +45,11 @@ class Timeslot(models.Model):
         booked_to = f' booked_to="{full_name(self.booked_to)}"' if self.booked_to else " booked_to=None"
 
         return f'<Timeslot id={self.pk} start="{d1}" end="{d2}" doctor="{self.doctor.name}"{booked_to}>'
+
+    @staticmethod
+    def book(request, timeslot_id):
+        Timeslot.objects.filter(pk=timeslot_id).update(booked_to=request.user)
+
+    @staticmethod
+    def cancel(request, timeslot_id):
+        Timeslot.objects.filter(pk=timeslot_id).update(booked_to=None)
