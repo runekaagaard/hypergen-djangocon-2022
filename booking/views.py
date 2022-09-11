@@ -15,6 +15,6 @@ from booking.models import Timeslot
 
 @liveview(perm="booking.create_booking")
 def free(request):
-    p("Hello djangocon 2022 from Hypergen <3")
+    h1("Hello djangocon 2022 from Hypergen <3")
 
 ### Actions ###
