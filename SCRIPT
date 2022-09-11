@@ -32,3 +32,34 @@ def menu():
         a("Book timeslot", href=free.reverse(), class_active="active")
         a("My bookings", href=booked.reverse(), class_active="active")
 
+"b1"           2    "button(\"Book\", id_=[\"timeslot\", timeslot.pk], class_=\"button primary\",
+                                   onclick=callback(book, timeslot.pk))"
+"b2"           1    "button(\"Cancel\", id=(\"timeslot\", timeslot.pk), class_=\"button error\",
+                           onclick=callback(cancel, timeslot.pk, confirm=\"Are your sure?\"))"
+"i1"           1    "input_(placeholder=\"Search here\", id_=\"search\", oninput=callback(search, THIS, debounce=50))"
+"m1"           2    "messages.add_message(request, messages.SUCCESS, \"You got it!\")"
+"m2"           2    "messages.add_message(request, messages.WARNING, \"Your booking is gone forever!\")"
+"r1"           1    "return HttpResponseRedirect(booked.reverse())"
+"t1"           0    "def menu():
+    with nav(class_=\"tabs nav-center\"):
+        a(\"Book timeslot\", href=free.reverse(), class_active=\"active\")
+        a(\"My bookings\", href=booked.reverse(), class_active=\"active\")
+
+@contextmanager
+def row():
+    with div(class_=\"row\"):
+        yield
+
+@contextmanager
+def col(n):
+    with div(class_=f\"col-{n}\"):
+        yield
+
+@contextmanager
+def card(title, description):
+    with div(class_=\"card\"):
+        header(h4(title))
+        p(description)
+        with footer(class_=\"is-right\"):
+            yield
+"

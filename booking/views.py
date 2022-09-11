@@ -50,7 +50,7 @@ def free_template(timeslots_by_date):
     menu()
 
     with p():
-        input_(placeholder="Search here", id_="search", oninput=callback(search, THIS))
+        input_(placeholder="Search here", id_="search", oninput=callback(search, THIS, debounce=50))
     with table():
         thead(tr(th(x) for x in ["Date", "Time", "Doctor", "Action"]))
         with tbody():
@@ -61,9 +61,9 @@ def free_template(timeslots_by_date):
                         td()
                         td(timeslot.fmt_time)
                         td(timeslot.doctor)
-                        td(
+                        with td():
                             button("Book", id_=["timeslot", timeslot.pk], class_="button primary",
-                                   onclick=callback(book, timeslot.pk)))
+                                   onclick=callback(book, timeslot.pk))
 
 ### Liveviews ###
 
@@ -80,7 +80,7 @@ def booked(request):
             with col(4):
                 with card(timeslot, timeslot.doctor):
                     button("Cancel", id=("timeslot", timeslot.pk), class_="button error",
-                           onclick=callback(cancel, timeslot.pk))
+                           onclick=callback(cancel, timeslot.pk, confirm="Are your sure?"))
 
 ### Actions ###
 
@@ -100,4 +100,4 @@ def search(request, query):
         base_view=booked)
 def cancel(request, pk):
     Timeslot.cancel(request, pk)
-    messages.add_message(request, messages.WARNING, "The timeslot is GONE!")
+    messages.add_message(request, messages.WARNING, "Your booking is gone forever!")
