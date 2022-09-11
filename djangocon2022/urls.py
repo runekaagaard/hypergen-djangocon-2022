@@ -22,9 +22,9 @@ from django.contrib.auth import login
 import booking.urls
 
 def auto_login(request):
-    from booking.views import my_bookings
+    from booking.views import free
     login(request, User.objects.get(username="admin"))
-    return redirect(my_bookings.reverse(), permanent=False)
+    return redirect(free.reverse(), permanent=False)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
