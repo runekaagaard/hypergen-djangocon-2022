@@ -24,11 +24,11 @@ def free_template(timeslots_by_date):
 
 @liveview(perm="booking.view_booking", base_template=base_template)
 def free(request):
-    pass
+    p("The free liveview.")
 
 @liveview(perm="booking.view_booking", base_template=base_template)
 def booked(request):
-    pass
+    p("The booked liveview.")
 
 ### Actions ###
 
