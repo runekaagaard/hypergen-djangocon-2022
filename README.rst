@@ -15,8 +15,8 @@ Interesting files
 =================
 
 booking/models.py
-  The Doctor and Timeslot models
+  The Doctor and Timeslot models.
 booking/urls.py
   The autourls() function that creates urls for all liveviews and actions automatically.
 booking/views.py
-  Empty skeleton of liveviews, actions, template functions and base_templates where we will build the app.
+  Empty skeleton of liveviews, actions, template functions and base templates where we will build the app.
