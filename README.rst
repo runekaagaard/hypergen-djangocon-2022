@@ -11,7 +11,7 @@ Install the example code like so::
   python manage.py migrate
   python manage.py runserver
 
-The navigate to `http://127.0.0.1:8000 <http://127.0.0.1:8000>`_ which logs you in automatically, then redirect you to the ``free`` view.
+The navigate to `http://127.0.0.1:8000 <http://127.0.0.1:8000>`_ that logs you in automatically, then redirects to the ``free`` liveview.
 
 Interesting files
 =================
