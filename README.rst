@@ -14,9 +14,18 @@ Install the example code like so::
 Interesting files
 =================
 
-booking/models.py
+`booking/models.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/models.py>`_
   The Doctor and Timeslot models.
-booking/urls.py
+`booking/urls.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/urls.py>`_
   The autourls() function that creates urls for all liveviews and actions automatically.
-booking/views.py
+`booking/views.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/views.py>`_
   Empty skeleton of liveviews, actions, template functions and base templates where we will build the app.
+
+Less interesting files
+======================
+
+`djangocon2022/settings.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/djangocon2022/settings.py>`_
+  The main settings file. ``booking`` is added to ``INSTALLED_APPS``. ``hypergen.context.context_middleware`` is added to ``MIDDLEWARE``.
+`djangocon2022/urls.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/djangocon2022/urls.py>`_
+  The main urls file. The booking app is added. ``/`` logs the user in automatically.
+
