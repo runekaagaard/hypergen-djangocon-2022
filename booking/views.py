@@ -15,31 +15,31 @@ from booking.models import Timeslot
 def base_template():
     yield
 
-base_template.target_id = "target"
+base_template.target_id = "content"
 
 def free_template(timeslots_by_date):
     pass
 
 ### Liveviews ###
 
-@liveview(perm="booking.view_booking", base_template=base_template)
+@liveview(perm="booking.view_booking", base_template=base_template)  # pyright: ignore[reportGeneralTypeIssues]
 def free(request):
     p("The free liveview.")
 
-@liveview(perm="booking.view_booking", base_template=base_template)
+@liveview(perm="booking.view_booking", base_template=base_template)  # pyright: ignore[reportGeneralTypeIssues]
 def booked(request):
     p("The booked liveview.")
 
 ### Actions ###
 
-@action(perm="booking.view_booking", target_id="target")
+@action(perm="booking.view_booking", base_template=base_template)  # pyright: ignore[reportGeneralTypeIssues]
 def search(request, query):
     pass
 
-@action(perm="booking.add_booking", target_id="target")
+@action(perm="booking.add_booking", base_template=base_template)  # pyright: ignore[reportGeneralTypeIssues]
 def book(request, pk):
     pass
 
-@action(perm="booking.delete_booking", target_id="target")
+@action(perm="booking.delete_booking", base_template=base_template)  # pyright: ignore[reportGeneralTypeIssues]
 def cancel(request, pk):
     pass
