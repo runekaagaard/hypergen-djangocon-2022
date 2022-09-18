@@ -11,7 +11,7 @@ Install the example code like so::
   python manage.py migrate
   python manage.py runserver
 
-The navigate to `http://127.0.0.1:8000 <http://127.0.0.1:8000>`_ that logs you in automatically, then redirects to the ``free`` liveview.
+Then navigate to `http://127.0.0.1:8000 <http://127.0.0.1:8000>`_ that logs you in automatically, then redirects to the ``free`` liveview.
 
 Interesting files
 =================
@@ -19,7 +19,7 @@ Interesting files
 `booking/models.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/models.py>`_
   The Doctor and Timeslot models.
 `booking/urls.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/urls.py>`_
-  The autourls() function that creates urls for all liveviews and actions automatically.
+  The ``autourls()`` function that creates urls for all liveviews and actions automatically.
 `booking/views.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/views.py>`_
   Skeleton of liveviews, actions, template functions and base templates where we will build the app.
 
