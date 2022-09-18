@@ -21,7 +21,7 @@ Interesting files
 `booking/urls.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/urls.py>`_
   The autourls() function that creates urls for all liveviews and actions automatically.
 `booking/views.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/views.py>`_
-  Empty skeleton of liveviews, actions, template functions and base templates where we will build the app.
+  Skeleton of liveviews, actions, template functions and base templates where we will build the app.
 
 Less interesting files
 ======================
