@@ -30,4 +30,6 @@ Less interesting files
   The main settings file. ``booking`` is added to ``INSTALLED_APPS``. ``hypergen.context.context_middleware`` is added to ``MIDDLEWARE``.
 `djangocon2022/urls.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/djangocon2022/urls.py>`_
   The main urls file. The booking app is added. ``/`` logs the user in automatically.
+`booking/pasta.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/pasta.py>`_
+  Some stuff we might copy/paste in the presentation.
 
