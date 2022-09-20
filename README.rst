@@ -31,5 +31,5 @@ Less interesting files
 `djangocon2022/urls.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/djangocon2022/urls.py>`_
   The main urls file. The booking app is added. ``/`` logs the user in automatically.
 `booking/pasta.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/pasta.py>`_
-  Some stuff we might copy/paste in the presentation.
+  Some stuff we might copy/paste during the presentation.
 
