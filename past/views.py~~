@@ -16,10 +16,9 @@ def base_template():
     doctype()
     with html():
         with head():
-            title(id_="t1")
+            title(id_="page-title")
             link(href=static("chota.css"))
         with body(), div(class_="container"):
-            h1(id_="t2")
             with div(id="content"):
                 yield
 
@@ -45,8 +44,8 @@ def free_template(timeslots_by_date):
                                onclick=callback(book, timeslot.pk))
 
 def page_header(title_):
-    command("hypergen.morph", "t1", title_)
-    command("hypergen.morph", "t2", title_)
+    h1(title_)
+    command("hypergen.morph", "page-title", title_)
 
     with nav(class_="tabs nav-center"):
         a("Book timeslot", href=free.reverse(), class_active="active")
