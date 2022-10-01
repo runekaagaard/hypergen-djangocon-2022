@@ -26,7 +26,7 @@ def free_template(timeslots_by_date):
 
 @liveview(perm="booking.view_booking", base_template=base_template)  # pyright: ignore[reportGeneralTypeIssues]
 def free(request):
-    p("The free liveview")
+    p("The free liveview.")
 
 @liveview(perm="booking.view_booking", base_template=base_template)  # pyright: ignore[reportGeneralTypeIssues]
 def booked(request):
