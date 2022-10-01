@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Serverside is back baby</title>
+<meta name="author" content="Rune Kaagaard &amp; Jeppe Tuxen"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+
+<!-- <link rel="stylesheet" href="dist/reset.css">
+     <link rel="stylesheet" href="dist/reveal.css"> -->
+<!-- <link rel="stylesheet" href="dist/theme/black.css"> -->
+<!-- Theme used for syntax highlighted code -->
+<!-- <link rel="stylesheet" href="plugin/highlight/monokai.css"> -->
+<style type="text/css">
+ .underline { text-decoration: underline; }
+ .section-number-2 {display: none}
+ .section-number-3 {display: none}
+ .section-number-4 {display: none}
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://cdn.jsdelivr.net/npm/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+    <section id="sec-title-slide" data-background="#FFFFFF"><h1 class="title">Serverside is back baby</h1><p class="subtitle">Live templates in pure python with Hypergen</p>
+        <p class="author">Rune Kaagaard &amp; Jeppe Tuxen</p>
+        
+            <img data-src="logo_prescriba.png" style="height: 50px; margin-right: 90px; margin-top: 100px">
+            <img data-src="logo_onebright.svg">    
+
+    </section>
+
+<section>
+<section id="slide-org01b218e">
+<h2 id="org01b218e"><span class="section-number-2">1</span> Hypergen</h2>
+<ul>
+<li>Project Home: <a href="https://hypergen.it/">https://hypergen.it/</a></li>
+<li>pip install django-hypergen</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org8afc05e">
+<h2 id="org8afc05e"><span class="section-number-2">2</span> About us</h2>
+<ul>
+<li class="fragment appear">Rune Kaagaard - CTO@Prescriba</li>
+<li class="fragment appear">Jeppe Tuxen - Developer@Prescriba</li>
+<li class="fragment appear">Prescriba / onebright : Mental Healthcare</li>
+<li class="fragment appear">Django for about 12 years since version 1.2</li>
+<li class="fragment appear">The Case System (Sagssystemet)</li>
+
+</ul>
+<aside class="notes">
+<ul>
+<li>Rune Kaagaard</li>
+<li>Jeppe Tuxen</li>
+<li>Danish Company Prescriba recently purchased by One Bright</li>
+<li>Sagssystemet: The Case System - has different frontends, Case Workers, Administrators, Clients, Company Representatives
+   a Monolith 
+</li>
+
+</ul>
+
+</aside>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org8c56075">
+<h2 id="org8c56075"><span class="section-number-2">3</span> The Game Plan</h2>
+<ul>
+<li class="fragment appear">Our journey towards liveviews</li>
+<li class="fragment appear">Hypergen - a liveview framework for Django</li>
+<li class="fragment appear">We will build an example app in Hypergen together</li>
+<li class="fragment appear">QA</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org66421e9">
+<h2 id="org66421e9"><span class="section-number-2">4</span> Our journey towards liveviews</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+</section>
+<section id="slide-org2a1da00">
+<h3 id="org2a1da00"><span class="section-number-3">4.1</span> From pure serverside rendering</h3>
+<ul>
+<li class="fragment appear">Django: A serverside rendering web framework</li>
+<li class="fragment appear">Models, Views, renders HTML through django template language - easy peasy</li>
+<li class="fragment appear">Request-Response cycle</li>
+<li class="fragment appear">Rendered HTML is stateless</li>
+<li class="fragment appear">One source of truth</li>
+<li class="fragment appear">We love it - simple to code, simple to maintain</li>
+<li class="fragment appear">Old school?</li>
+<li class="fragment appear">More dynamic views - single page apps?</li>
+
+</ul>
+<aside class="notes">
+<p>
+
+</p>
+
+</aside>
+</section>
+<section id="slide-org22828a5">
+<h3 id="org22828a5"><span class="section-number-3">4.2</span> Over jQuery - partially client-side rendered</h3>
+<ul>
+<li class="fragment appear">jQuery - fetch partial state through ajax.</li>
+<li class="fragment appear">Procedurally regenerate part of the DOM</li>
+<li class="fragment appear">Mixing state into DOM elements</li>
+<li class="fragment appear">DOM would get out of sync with state</li>
+
+</ul>
+</section>
+<section id="slide-org8bb5de8">
+<h3 id="org8bb5de8"><span class="section-number-3">4.3</span> Going React - full blown client-side rendering</h3>
+<ul>
+<li class="fragment appear">React, a Javascript framework for clientside rendering</li>
+<li class="fragment appear">Declarative</li>
+<li class="fragment appear">Everything is rendered from state so not a problem with DOM beeing out of sync</li>
+<li class="fragment appear">Automatic rerender on state changes</li>
+<li class="fragment appear">Great to work with but at the cost of..</li>
+
+</ul>
+</section>
+<section id="slide-org8bb5de8-split">
+<ul>
+<li>A lot more frontend Javascript/JSX code</li>
+
+</ul>
+<ul>
+<li class="fragment appear">Harder to maintain two languages</li>
+<li class="fragment appear">Serialization</li>
+<li class="fragment appear">We can't use djangos ORM in Javascript</li>
+
+</ul>
+</section>
+<section id="slide-org8bb5de8-split">
+<ul>
+<li class="fragment appear">Webpack</li>
+<li class="fragment appear">Frontend validation and Backend validation which is right?</li>
+<li class="fragment appear">No single source of truth</li>
+<li class="fragment appear">A lot of overhead</li>
+
+</ul>
+</section>
+<section id="slide-org2867f9e">
+<h3 id="org2867f9e"><span class="section-number-3">4.4</span> Liveviews - Serverside is back baby</h3>
+<ul>
+    <li>Server renders full HTML page</li>
+    <li>Client events triggers callbacks</li>
+    <li>Server sends partial HTML to client</li>    
+    <li>Client updates HTML</li>
+    <li>Rinse and repeat</li>
+</ul>
+</section>
+<section id="slide-org286asde">
+<ul>
+<li>We can again define everything at serverlevel</li>
+<li>No need to maintain expensive frontend</li>
+<li>One source of truth</li>
+</ul>
+</section>
+<section id="slide-orgbee5c57">
+<h2 id="orgbee5c57"><span class="section-number-2">5</span> Hypergen - liveview for Django</h2>
+<ul>
+<li class="fragment appear">Main inspiration: Phoenix Liveview - the mother of liveviews based on Elixir</li>
+<li class="fragment appear">Short for HYPertext GENerator</li>
+<li class="fragment appear">A composable template language written in pure python</li>
+<li class="fragment appear">Builtin liveview capabilities</li>
+<li class="fragment appear">Extendable with plugins</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orge8b00b2">
+<h2 id="orge8b00b2"><span class="section-number-2">6</span> Hypergen 101 - the crash course</h2>
+<div class="org-src-container">
+
+<pre  class="fragment (appear)"   ><code trim><span style="color: #F92672;">def</span> <span style="color: #A6E22E;">my_template</span>():
+    section(
+        div(
+            <span style="color: #E6DB74;">"All html tags can be rendered using python "</span>,
+            <span style="color: #E6DB74;">"functions with the same name"</span>, 
+            span(<span style="color: #E6DB74;">"Inside a span tag"</span>, 
+                 class_=<span style="color: #E6DB74;">"my-class"</span>)
+        )
+    )
+    
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre  class="fragment (appear)"   ><code trim>&lt;<span style="color: #A6E22E;">section</span>&gt;
+    &lt;<span style="color: #A6E22E;">div</span>&gt;
+        All html tags can be rendered using simple python 
+        functions with the same name,
+        &lt;<span style="color: #A6E22E;">span</span> <span style="color: #FD971F;">class</span>=<span style="color: #E6DB74;">"my-class"</span>&gt;Inside a span tag&lt;/<span style="color: #A6E22E;">span</span>&gt;
+    &lt;/<span style="color: #A6E22E;">div</span>&gt;
+&lt;/<span style="color: #A6E22E;">section</span>&gt;
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org8063f29">
+<h3 id="org8063f29"><span class="section-number-3">6.1</span> Tag functions</h3>
+<div class="outline-text-3" id="text-6-1">
+</div>
+</section>
+<section id="slide-org7f85b10">
+<h4 id="org7f85b10"><span class="section-number-4">6.1.1</span> Children and attributes</h4>
+<div class="org-src-container">
+
+<pre><code trim>p(<span style="color: #E6DB74;">"One"</span>, <span style="color: #E6DB74;">" two"</span>, 3, title=<span style="color: #E6DB74;">"Read me!"</span>)
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code trim>&lt;<span style="color: #A6E22E;">p</span> <span style="color: #FD971F;">title</span>=<span style="color: #E6DB74;">"Read me!"</span>&gt;One two3&lt;/<span style="color: #A6E22E;">p</span>&gt;
+</code></pre>
+</div>
+
+
+</section>
+<section id="slide-orgfaf450c">
+<h4 id="orgfaf450c"><span class="section-number-4">6.1.2</span> Iterables</h4>
+<div class="org-src-container">
+
+<pre><code trim>p([1, 2, 3], (x <span style="color: #F92672;">for</span> x <span style="color: #F92672;">in</span> <span style="color: #F92672;">range</span>(4,6)))
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code trim>&lt;<span style="color: #A6E22E;">p</span>&gt;123456&lt;/<span style="color: #A6E22E;">p</span>&gt;
+</code></pre>
+</div>
+
+
+</section>
+<section id="slide-orge20da62">
+<h4 id="orge20da62"><span class="section-number-4">6.1.3</span> Id, class and style</h4>
+<div class="org-src-container">
+
+<pre><code trim>p(<span style="color: #E6DB74;">"Hi"</span>, <span style="color: #F92672;">id</span>=[<span style="color: #E6DB74;">"foo"</span>, 42], 
+  class_={<span style="color: #E6DB74;">"class1"</span>, <span style="color: #E6DB74;">"class2"</span>}, 
+  style=<span style="color: #F92672;">dict</span>(background_color=<span style="color: #E6DB74;">"green"</span>))
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code trim>&lt;<span style="color: #A6E22E;">p</span> <span style="color: #FD971F;">class</span>=<span style="color: #E6DB74;">"class2 class1"</span> 
+   <span style="color: #FD971F;">style</span>=<span style="color: #E6DB74;">"background-color:green"</span> <span style="color: #FD971F;">id</span>=<span style="color: #E6DB74;">"foo-42"</span>&gt;Hi&lt;/<span style="color: #A6E22E;">p</span>&gt;
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orga241697">
+<h4 id="orga241697"><span class="section-number-4">6.1.4</span> Separator and ending.</h4>
+<div class="org-src-container">
+
+<pre><code trim>p(<span style="color: #E6DB74;">"Hello"</span>, <span style="color: #E6DB74;">"world"</span>, sep=<span style="color: #E6DB74;">" "</span>, end=<span style="color: #E6DB74;">"!"</span>)
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code trim>&lt;<span style="color: #A6E22E;">p</span>&gt;Hello world!&lt;/<span style="color: #A6E22E;">p</span>&gt;
+</code></pre>
+</div>
+
+
+</section>
+<section id="slide-orgd5ef1d9">
+<h3 id="orgd5ef1d9"><span class="section-number-3">6.2</span> Pure Python</h3>
+<ul>
+<li class="fragment appear">Conditionals</li>
+<li class="fragment appear">Loops</li>
+<li class="fragment appear">With statements</li>
+<li class="fragment appear">Access djangos ORM</li>
+
+</ul>
+
+</section>
+<section id="slide-orgfa6c587">
+<h3 id="orgfa6c587"><span class="section-number-3">6.3</span> Composable: Create reusable components</h3>
+</section>
+<section id="slide-orgfa6c587-split">
+<div class="org-src-container">
+
+<pre  class="src src-python"   ><code trim><span style="color: #F92672;">def</span> <span style="color: #A6E22E;">yes_or_no_component</span>(is_active):
+    span(<span style="color: #E6DB74;">"YES"</span> <span style="color: #F92672;">if</span> is_active <span style="color: #F92672;">else</span> <span style="color: #E6DB74;">"NO"</span>)
+
+<span style="color: #F92672;">def</span> <span style="color: #A6E22E;">row_component</span>(instance):
+    <span style="color: #75715E;"># </span><span style="color: #75715E;">We can use tag functions as context managers</span>
+    <span style="color: #F92672;">with</span> tr(class_=<span style="color: #E6DB74;">"green"</span> <span style="color: #F92672;">if</span> instance.is_active <span style="color: #F92672;">else</span> <span style="color: #E6DB74;">""</span>):
+        td(instance.<span style="color: #F92672;">id</span>)
+        td(instance.name)
+        td(
+            yes_or_no_component(instance.is_active)
+        )
+ 
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgfa6c587-split">
+    <div class="org-src-container">
+        
+        <pre  class="src src-python"   ><code trim><span style="color: #F92672;">def</span> <span style="color: #A6E22E;">_table</span>():
+            <span style="color: #F92672;">with</span> table():
+        tr(
+            th(<span style="color: #E6DB74;">"ID"</span>),
+            th(<span style="color: #E6DB74;">"Name"</span>),
+            th(<span style="color: #E6DB74;">"Active"</span>)
+        )
+            <span style="color: #F92672;">for</span> instance <span style="color: #F92672;">in</span> SomeDjangoModel.objects.<span style="color: #F92672;">all</span>():
+            <span style="color: #75715E;"># </span><span style="color: #75715E;">Using the previously defined component</span>
+            row_component(instance)
+
+        </code></pre>
+    </div>
+    
+</section>
+</section>
+<section>
+    <section id="slide-org96a11fb">
+        <h2 id="org96a11fb"><span class="section-number-2">7</span> Enough Talk - lets create an app</h2>
+        <p>
+            <a href="https://github.com/runekaagaard/hypergen-djangocon-2022">https://github.com/runekaagaard/hypergen-djangocon-2022</a>
+        </p>
+    </section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<!-- <script src="plugin/highlight/highlight.js"></script> -->
+<script>
+ // More info about initialization & config:
+ // - https://revealjs.com/initialization/
+ // - https://revealjs.com/config/
+ /* Reveal.initialize({
+  *     hash: true,
+  *     
+  *     // Learn about plugins: https://revealjs.com/plugins/
+  *     plugins: [ RevealMarkdown,  RevealNotes ]
+  * }); */
+
+</script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+ Reveal.initialize({
+     slideNumber:false,
+     
+     // Optional libraries used to extend on reveal.js
+     dependencies: [
+         { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+     
+ });
+
+</script>
+</body>
+</html>
