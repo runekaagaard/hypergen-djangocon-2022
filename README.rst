@@ -30,7 +30,7 @@ Interesting files
   The ``autourls()`` function that creates urls for all liveviews and actions automatically.
 `booking/views.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/views.py>`_
   Skeleton of liveviews, actions, template functions and base templates where we will build the app.
-`booking/views_finished.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/views.py>`_
+`booking/views_finished.py <https://github.com/runekaagaard/hypergen-djangocon-2022/blob/main/booking/views_finished.py>`_
   The finished app, that was build in the 30 minutes long live-coding part.
 
 
