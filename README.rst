@@ -1,3 +1,11 @@
+Server-Side is back, baby!
+==========================
+
+This repository contains the example code from our workshop at Djangocon 2022 in Porto. Also available are:
+
+- The `slides <https://runekaagaard.github.io/hypergen-djangocon-2022/>`_
+- The `workshop description <https://pretalx.evolutio.pt/djangocon-europe-2022/talk/CFCFFF/>`_
+
 Installation
 ============
 
