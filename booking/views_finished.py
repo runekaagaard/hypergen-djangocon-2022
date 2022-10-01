@@ -9,21 +9,39 @@ from django.templatetags.static import static
 
 from booking.models import Timeslot
 
+from django.utils.translation import get_language
+
 ### Templates ###
 
 @contextmanager
 def base_template():
     doctype()
-    with html():
+    with html(lang=get_language()):
         with head():
             link(href=static("chota.css"))
-        with body():
-            with div(class_="container"):
-                h1("Doctor booking")
-                with div(id_="target"):
-                    yield
+        with body(), div(class_="container"):
+            h1("Doctor booking")
+            with div(id="content"):
+                yield
 
-base_template.target_id = "target"
+base_template.target_id = "content"
+
+def free_template(timeslots_by_date):
+    menu()
+    with p():
+        input_(id_="search", oninput=callback(search, THIS, debounce=50))
+    with table(class_="striped"):
+        tr(th(x) for x in ("Date", "Time", "Doctor", "Actions"))
+        for date, timeslots in timeslots_by_date:
+            tr(th(date, colspan=4))
+            for timeslot in timeslots:
+                with tr():
+                    td()
+                    td(timeslot.fmt_time)
+                    td(timeslot.doctor)
+                    with td():
+                        button("Book", class_="button primary", id=("timeslot", timeslot.pk),
+                               onclick=callback(book, timeslot.pk))
 
 def menu():
     with nav(class_="tabs nav-center"):
@@ -48,59 +66,44 @@ def card(title, description):
         with footer(class_="is-right"):
             yield
 
-def free_template(timeslots_by_date):
-    menu()
-
-    with p():
-        input_(placeholder="Search here", id_="search", oninput=callback(search, THIS, debounce=50))
-
-    with table():
-        with thead():
-            tr(th(x) for x in ["Date", "Time", "Doctor", "Action"])
-        with tbody():
-            for date, timeslots in timeslots_by_date:
-                tr(th(date, colspan=4))
-                for timeslot in timeslots:
-                    with tr():
-                        td()
-                        td(timeslot)
-                        td(timeslot.doctor)
-                        with td():
-                            button("Book", id_=["timeslot", timeslot.pk], class_="button primary",
-                                   onclick=callback(book, timeslot.pk))
-
 ### Liveviews ###
 
-@liveview(perm="booking.view_booking", base_template=base_template, user_plugins=[AlertifyPlugin()])
+@liveview(perm="booking.view_booking", base_template=base_template,
+          user_plugins=[AlertifyPlugin()])  # pyright: ignore[reportGeneralTypeIssues]
 def free(request):
     timeslots_by_date = Timeslot.free_by_date()
     free_template(timeslots_by_date)
 
-@liveview(perm="booking.view_booking", base_template=base_template, user_plugins=[AlertifyPlugin()])
+@liveview(perm="booking.view_booking", base_template=base_template,
+          user_plugins=[AlertifyPlugin()])  # pyright: ignore[reportGeneralTypeIssues]
 def booked(request):
     menu()
     with row():
         for timeslot in Timeslot.objects.filter(booked_to=request.user):
-            with col(4), card(timeslot.fmt_datetime, timeslot.doctor):
-                button("Cancel", id=("timeslot", timeslot.pk), class_="button error",
-                       onclick=callback(cancel, timeslot.pk, confirm="Are your sure?"))
+            with col(4), card(timeslot, timeslot.doctor):
+                button("Cancel", class_="button error", id=["cancel", timeslot.pk],
+                       onclick=callback(cancel, timeslot.pk, confirm="Are you sure?"))
 
 ### Actions ###
 
-@action(perm="booking.view_booking", base_template=base_template, user_plugins=[AlertifyPlugin()])
+@action(perm="booking.view_booking", base_template=base_template,
+        user_plugins=[AlertifyPlugin()])  # pyright: ignore[reportGeneralTypeIssues]
 def search(request, query):
     timeslots_by_date = Timeslot.free_by_date(query)
     free_template(timeslots_by_date)
 
-@action(perm="booking.add_booking", base_template=base_template, user_plugins=[AlertifyPlugin()])
+@action(perm="booking.add_booking", base_template=base_template,
+        user_plugins=[AlertifyPlugin()])  # pyright: ignore[reportGeneralTypeIssues]
 def book(request, pk):
     Timeslot.book(request, pk)
+
     messages.add_message(request, messages.SUCCESS, "You got it!")
 
     return HttpResponseRedirect(booked.reverse())
 
-@action(perm="booking.delete_booking", base_template=base_template, user_plugins=[AlertifyPlugin()],
-        base_view=booked)
+@action(perm="booking.delete_booking", base_view=booked, base_template=base_template,
+        user_plugins=[AlertifyPlugin()])  # pyright: ignore[reportGeneralTypeIssues]
 def cancel(request, pk):
     Timeslot.cancel(request, pk)
+
     messages.add_message(request, messages.WARNING, "Your booking is gone forever!")
